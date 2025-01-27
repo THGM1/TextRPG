@@ -3,11 +3,14 @@
     internal class GameManager
     {
         static string[] menus = { "상태 보기", "인벤토리", "상점" };
+        static string[] invenMenu = { "장착 관리", "나가기" };
         static Player player;
         static void Main(string[] args)
         {
+
             Start();
-            
+
+
         }
         static void Start()
         {
@@ -21,7 +24,14 @@
                 string job = Console.ReadLine();
                 player = new Player(name, job);
             }
-            
+            Armor item1 = new Armor("무쇠갑옷", 5, "무쇠로 만들어져 튼튼한 갑옷", true);
+            Weapon item2 = new Weapon("스파르타의 창", 7, "스파르타의 전사들이 사용했다는 전설의 창", true);
+            Weapon item3 = new Weapon("낡은 검", 2, "쉽게 볼 수 있는 낡은 검", false);
+            Weapon item4 = new Weapon("검", 2, "검", false);
+            player.inventory.Add(item1);
+            player.inventory.Add(item2);
+            player.inventory.Add(item3);
+
             Menu();
 
         }
@@ -33,15 +43,21 @@
             }
             Console.WriteLine();
             Console.WriteLine("원하시는 행동을 입력해주세요.");
-            string input = Console.ReadLine();
-            switch (input)
+            while (true)
             {
-                case "1":
-                    ShowStatus();
-                    break;
-                case "2":
-
-                    break;
+                string input = Console.ReadLine();
+                switch (input)
+                {
+                    case "1":
+                        ShowStatus();
+                        break;
+                    case "2":
+                        ShowInventory();
+                        break;
+                    default:
+                        Console.WriteLine("다시 입력하세요");
+                        break;
+                }
             }
         }
         static void ShowStatus()
@@ -51,9 +67,53 @@
             Console.WriteLine("\n0. 나가기");
             Console.WriteLine("\n원하시는 행동을 입력해주세요.");
             string input = Console.ReadLine();
-            if(input != null)
+            while (true)
             {
-                Menu();
+                if (input == "0")
+                {
+                    Menu();
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("다시 입력하세요");
+                }
+            }
+
+        }
+        static void ShowInventory()
+        {
+            Console.WriteLine("[아이템 목록]");
+            foreach(Item item in player.inventory)
+            {
+                if (item.isSetting)
+                {
+                    Console.Write("[E]");
+                }
+                else continue;
+                item.GetInfo();
+            }
+            Console.WriteLine();
+            for (int i = 0; i < invenMenu.Length; i++)
+            {
+                Console.WriteLine($"{i+1}. {invenMenu[i]}");
+            }
+            Console.WriteLine("\n 원하시는 행동을 입력해주세요");
+            while (true)
+            {
+                string input = Console.ReadLine();
+                switch (input)
+                {
+                    case "1":
+                        Menu(); //장착 관리로 바꿔야함
+                        break;
+                    case "2":
+                        Menu();
+                        break;
+                    default:
+                        Console.WriteLine("다시 입력하세요.");
+                        break;
+                }
             }
 
         }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace TextRPG
 {
+
     internal class Player
     {
         int level; //레벨
@@ -15,7 +16,8 @@ namespace TextRPG
         double def; //방어력
         int hp; //체력
         int gold; //골드
-
+        public List<Item> inventory; //인벤토리
+        
         public Player(string name, string job)
         {
             this.name = name;
@@ -24,6 +26,7 @@ namespace TextRPG
             this.def = 5;
             this.hp = 100;
             this.gold = 1500;
+            this.inventory = new List<Item>();
         }
         public void getPlayer()
         {
@@ -34,6 +37,5 @@ namespace TextRPG
             Console.WriteLine($"체력: {hp}");
             Console.WriteLine($"Gold: {gold} G");
         }
-        
     }
 }
