@@ -10,10 +10,11 @@ namespace TextRPG
     internal class Armor: Item
     {
         public double def { get; set; }
-        public Armor(string name, double def, string info, bool isSetting) : base(name, info, false)
+        public Armor(string name, double def, string info, int price, bool isSetting) : base(name, info, price)
         {
             this.def = def;
             this.isSetting = isSetting;
+            
         }
         public override void GetInfo()
         {

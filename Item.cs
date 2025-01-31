@@ -13,11 +13,12 @@ namespace TextRPG
         public string info { get; set; }
         public bool isSetting {  get; set; }
         public int price { get; set; }
-        public Item(string name, string info, bool isSetting)
+        public Item(string name, string info, int price)
         {
             this.name = name;
             this.info = info;
-            this.isSetting = isSetting;
+            this.price = price;
+            this.isSetting = false;
         }
 
         public virtual void GetInfo()

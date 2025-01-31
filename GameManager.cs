@@ -7,7 +7,9 @@ namespace TextRPG
     {
         static string[] menus = { "상태 보기", "인벤토리", "상점" };
         static string[] invenMenu = { "장착 관리", "나가기" };
+        static string[] shopMenu = { "나가기", "아이템 구매" };
         static Player player;
+        static Shop shop;
         static void Main(string[] args)
         {
 
@@ -27,13 +29,12 @@ namespace TextRPG
                 string job = Console.ReadLine();
                 player = new Player(name, job);
             }
-            Armor item1 = new Armor("무쇠갑옷", 5, "무쇠로 만들어져 튼튼한 갑옷", true);
-            Weapon item2 = new Weapon("스파르타의 창", 7, "스파르타의 전사들이 사용했다는 전설의 창", true);
-            Weapon item3 = new Weapon("낡은 검", 2, "쉽게 볼 수 있는 낡은 검", false);
-            Weapon item4 = new Weapon("검", 2, "검", false);
-            player.inventory.Add(item1);
-            player.inventory.Add(item2);
-            player.inventory.Add(item3);
+            shop = new Shop();
+
+            player.inventory.Add(new Armor("무쇠갑옷", 5, "무쇠로 만들어져 튼튼한 갑옷", 2000, true));
+            player.inventory.Add(new Weapon("스파르타의 창", 7, "스파르타의 전사들이 사용했다는 전설의 창", 2500, true));
+            player.inventory.Add(new Weapon("낡은 검", 2, "쉽게 볼 수 있는 낡은 검", 600, false));
+
 
             Menu();
 
@@ -57,6 +58,9 @@ namespace TextRPG
                         break;
                     case "2":
                         ShowInventory();
+                        break;
+                    case "3":
+                        ShowShop();
                         break;
                     default:
                         Console.WriteLine("다시 입력하세요");
@@ -102,7 +106,7 @@ namespace TextRPG
             {
                 Console.WriteLine($"{i+1}. {invenMenu[i]}");
             }
-            Console.WriteLine("\n 원하시는 행동을 입력해주세요");
+            Console.WriteLine("\n원하시는 행동을 입력해주세요");
             while (true)
             {
                 string input = Console.ReadLine();
@@ -122,7 +126,7 @@ namespace TextRPG
 
         }
 
-        static void ShowSetting()
+        public static void ShowSetting()
         {
             Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.\n");
             Console.WriteLine("[아이템 목록]\n");
@@ -141,7 +145,7 @@ namespace TextRPG
             Console.WriteLine("0. 나가기");
             while (true)
             {
-                Console.WriteLine("\n 원하시는 행동을 입력해주세요");
+                Console.WriteLine("\n원하시는 행동을 입력해주세요");
                 string input = Console.ReadLine();
                 if (input == "0")
                 {
@@ -159,6 +163,58 @@ namespace TextRPG
                     Console.WriteLine("다시 입력하세요.");
                 }
 
+            }
+        }
+        
+        public static void ShowShop()
+        {
+            Console.WriteLine("상점\n필요한 아이템을 얻을 수 있는 상점입니다.");
+            Console.WriteLine("[보유 골드]\n{0}\n", player.gold);
+            Console.WriteLine("[아이템 목록]\n");
+            shop.ShowItems(player, false);
+            Console.WriteLine();
+            for(int i = 0; i < shopMenu.Length; i++)
+            {
+                Console.WriteLine($"{i}. {shopMenu[i]}");
+            }
+            Console.WriteLine("\n원하시는 행동을 입력해주세요.");
+            while (true)
+            {
+                switch (Console.ReadLine())
+                {
+                    case "0":
+                        Menu();
+                        break;
+                    case "1":
+                        ShowBuy();
+                        break;
+                    default:
+                        Console.WriteLine("다시 입력하세요.");
+                        break;
+                }
+            }
+
+        }
+        public static void ShowBuy()
+        {
+           
+            while (true)
+            {
+                Console.WriteLine("[보유 골드]\n{0}\n", player.gold);
+                Console.WriteLine("[아이템 목록]\n");
+                shop.ShowItems(player, true);
+                Console.WriteLine("\n0. 나가기");
+                Console.WriteLine("\n원하시는 행동을 입력해주세요.");
+                int input = int.Parse(Console.ReadLine());
+                if (input == 0)
+                {
+                    ShowShop();
+                    break;
+                }
+                else
+                {
+                    shop.BuyItmes(player, input);
+                }
             }
         }
     }

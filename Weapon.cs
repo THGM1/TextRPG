@@ -9,7 +9,7 @@ namespace TextRPG
     internal class Weapon: Item
     {
         public double atk {  get; set; }
-        public Weapon(string name, double atk, string info, bool isSetting): base(name, info, false)
+        public Weapon(string name, double atk, string info, int price, bool isSetting): base(name, info, price)
         {
             this.atk = atk;
             this.isSetting = isSetting;

@@ -15,7 +15,7 @@ namespace TextRPG
         double atk; //공격력
         double def; //방어력
         int hp; //체력
-        int gold; //골드
+        public int gold; //골드
         public List<Item> inventory; //인벤토리
 
         public Player(string name, string job)
