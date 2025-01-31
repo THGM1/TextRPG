@@ -1,4 +1,7 @@
-﻿namespace TextRPG
+﻿using System.ComponentModel.Design;
+using System.Data;
+
+namespace TextRPG
 {
     internal class GameManager
     {
@@ -37,6 +40,7 @@
         }
         static void Menu()
         {
+            Console.WriteLine();
             for (int i = 0; i < menus.Length; i++)
             {
                 Console.WriteLine($"{i + 1}. {menus[i]}");
@@ -83,14 +87,14 @@
         }
         static void ShowInventory()
         {
-            Console.WriteLine("[아이템 목록]");
+            Console.WriteLine("[아이템 목록]\n");
             foreach(Item item in player.inventory)
             {
+                Console.Write("- ");
                 if (item.isSetting)
                 {
                     Console.Write("[E]");
                 }
-                else continue;
                 item.GetInfo();
             }
             Console.WriteLine();
@@ -105,7 +109,7 @@
                 switch (input)
                 {
                     case "1":
-                        Menu(); //장착 관리로 바꿔야함
+                        ShowSetting();
                         break;
                     case "2":
                         Menu();
@@ -116,6 +120,46 @@
                 }
             }
 
+        }
+
+        static void ShowSetting()
+        {
+            Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.\n");
+            Console.WriteLine("[아이템 목록]\n");
+            int i = 1;
+            foreach (Item item in player.inventory)
+            {
+                Console.Write($"- {i}. ");
+                if (item.isSetting)
+                {
+                    Console.Write("[E]");
+                }
+                item.GetInfo();
+                i++;
+            }
+            Console.WriteLine();
+            Console.WriteLine("0. 나가기");
+            while (true)
+            {
+                Console.WriteLine("\n 원하시는 행동을 입력해주세요");
+                string input = Console.ReadLine();
+                if (input == "0")
+                {
+                    ShowInventory();
+                    break;
+                }
+                else if (int.Parse(input) <= player.inventory.Count)
+                {
+                    player.inventory[int.Parse(input) - 1].setting();
+                    ShowSetting();
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("다시 입력하세요.");
+                }
+
+            }
         }
     }
 }

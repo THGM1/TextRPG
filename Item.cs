@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace TextRPG
 {
-    abstract class Item
+    class Item
     {
         public string name { get; set; }
         public string info { get; set; }
         public bool isSetting {  get; set; }
+        public int price { get; set; }
         public Item(string name, string info, bool isSetting)
         {
             this.name = name;
@@ -18,7 +20,15 @@ namespace TextRPG
             this.isSetting = isSetting;
         }
 
-        public abstract void GetInfo();
+        public virtual void GetInfo()
+        {
+            Console.WriteLine($"{name} | {info}");
+        }
+        
+        public void setting()
+        {
+            isSetting = !isSetting;
+        }
 
 
     }

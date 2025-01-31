@@ -17,7 +17,7 @@ namespace TextRPG
         int hp; //체력
         int gold; //골드
         public List<Item> inventory; //인벤토리
-        
+
         public Player(string name, string job)
         {
             this.name = name;
@@ -30,12 +30,45 @@ namespace TextRPG
         }
         public void getPlayer()
         {
+            double totalAtk = atk;
+            double totalDef = def;
+            foreach (Item item in inventory)
+            {
+                if (item.isSetting)
+                {
+                    if (item is Weapon w)
+                        totalAtk += w.atk;
+                    else if (item is Armor a)
+                        totalDef += a.def;
+                }
+            }
             Console.WriteLine($"Lv. {level}");
             Console.WriteLine($"{name} ({job})");
-            Console.WriteLine($"공격력: {atk}");
-            Console.WriteLine($"방어력: {def}");
+
+            Console.Write($"공격력: {totalAtk}  ");
+            if (totalAtk != atk) Console.Write($"(+ {totalAtk - atk})");
+            Console.WriteLine();
+            Console.Write($"방어력: {totalDef}  ");
+            if (totalDef != def) Console.Write($"(+ {totalDef - def})");
+
+            Console.WriteLine();
             Console.WriteLine($"체력: {hp}");
             Console.WriteLine($"Gold: {gold} G");
+        }
+
+        public void UpdateStatus()
+        {
+            foreach (Item item in inventory)
+            {
+                if(item is Weapon w)
+                {
+                    atk += w.atk;
+                }
+                else if(item is Armor a)
+                {
+                    def += a.def;
+                }
+            }
         }
     }
 }
