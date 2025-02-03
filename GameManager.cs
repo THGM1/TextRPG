@@ -5,18 +5,23 @@ namespace TextRPG
 {
     internal class GameManager
     {
-        static string[] menus = { "상태 보기", "인벤토리", "상점", "휴식하기" };
+        static string[] menus = { "상태 보기", "인벤토리", "상점", "던전입장","휴식하기" };
         static Dictionary<int, Action> menuAction = new Dictionary<int, Action>
         {
             { 1, ShowStatus },
             {2, ShowInventory },
             {3, ShowShop },
-            {4, ShowRest }
+            {4, ShowDungeon },
+            {5, ShowRest }
         };
         static string[] invenMenu = { "장착 관리", "나가기" };
         static string[] shopMenu = { "나가기", "아이템 구매", "아이템 판매" };
         static Player player;
         static Shop shop;
+        static Dungeon easy;
+        static Dungeon normal;
+        static Dungeon hard;
+
         static void Main(string[] args)
         {
 
@@ -34,6 +39,7 @@ namespace TextRPG
             shop = new Shop(); // 상점
 
             EquipItems();
+            CreateDungeon();
 
         }
         static void CreatePlayer() // 플레이어 생성
@@ -46,6 +52,12 @@ namespace TextRPG
                 string job = Console.ReadLine();
                 player = new Player(name, job);
             }
+        }
+        static void CreateDungeon()
+        {
+            easy = new Dungeon(1, 5);
+            normal = new Dungeon(2, 11);
+            hard = new Dungeon(3, 17);
         }
         static void EquipItems() // 기본 아이템 지급
         {
@@ -307,6 +319,40 @@ namespace TextRPG
                         Console.WriteLine("다시 입력해주세요.");
                         break;
                 }
+            }
+        }
+        public static void ShowDungeon() // 4. 던전입장
+        {
+            Console.WriteLine("던전입장");
+            Console.WriteLine("이곳에서 던전으로 들어가기전 활동을 할 수 있습니다.");
+            Console.WriteLine($"1. {easy.name} | 방어력 {easy.reqDef} 이상 권장");
+            Console.WriteLine($"2. {normal.name} | 방어력 {normal.reqDef} 이상 권장");
+            Console.WriteLine($"3. {hard.name} | 방어력 {hard.reqDef} 이상 권장");
+            while (true)
+            {
+
+                Console.WriteLine("\n0. 나가기");
+                Console.WriteLine("\n원하시는 행동을 입력해주세요.");
+                switch (Console.ReadLine())
+                {
+                    case "0":
+                        Menu();
+                        break;
+                    case "1":
+                        easy.Clear(player);
+                        break;
+                    case "2":
+                        normal.Clear(player);
+                        break;
+                    case "3":
+                        hard.Clear(player);
+                        break;
+                    default:
+                        Console.WriteLine("다시 입력해주세요.");
+                        break;
+                        
+                }
+
             }
         }
     }

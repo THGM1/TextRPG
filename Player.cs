@@ -9,12 +9,12 @@ namespace TextRPG
 
     internal class Player
     {
-        int level; //레벨
-        string name; //이름
-        string job; //직업
-        double atk; //공격력
-        double def; //방어력
-        int hp; //체력
+        public int level; //레벨
+        public string name; //이름
+        public string job; //직업
+        public int atk; //공격력
+        public int def; //방어력
+        public int hp; //체력
         public int gold; //골드
         public List<Item> inventory; //인벤토리
         public Weapon equippedWeapon; // 착용한 무기
@@ -32,8 +32,8 @@ namespace TextRPG
         }
         public void getPlayer()
         {
-            double totalAtk = atk;
-            double totalDef = def;
+            int totalAtk = atk;
+            int totalDef = def;
             foreach (Item item in inventory)
             {
                 if (item.isSetting)
