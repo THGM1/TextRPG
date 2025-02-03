@@ -12,6 +12,7 @@ namespace TextRPG
         public int level; // 난이도
         public int reqDef; // 권장 방어력
         public int reward; // 보상 G
+        public bool isClear;
         Player player;
         Random rand = new Random();
         public Dungeon(int level, int reqDef)
@@ -37,12 +38,13 @@ namespace TextRPG
 
         public int[] Enter(Player player)
         {
-            int[] dungeonClear = new int[2] {0,0};
+            int[] dungeonClear = {0,0};
             if (player.def < reqDef) // 권장 방어력보다 작다면
             {
                 if (rand.NextDouble() < 0.4)
                 {  // 40% 확률로 실패
                     player.hp /= 2;
+                    isClear = false;
                     return dungeonClear;
                 }
             }
@@ -52,17 +54,31 @@ namespace TextRPG
 
             dungeonClear[1] = reward * (1 + rand.Next(player.atk, player.atk * 2) / 100);
             player.gold += dungeonClear[1];
+            isClear = true;
+            player.clearCnt++;
             return dungeonClear;
         }
 
         public void Clear(Player player)
         {
             int[] clear = Enter(player);
-            Console.WriteLine("축하합니다!!!");
-            Console.WriteLine($"{name}을 클리어 하였습니다.");
-            Console.WriteLine("\n[탐험 결과]");
-            Console.WriteLine($"체력: {player.hp + clear[0]} -> {player.hp}");
-            Console.WriteLine($"Gold: {player.gold - clear[1]} G -> {player.gold} G");
+            if (isClear)
+            {
+
+                Console.WriteLine("축하합니다!!!");
+                Console.WriteLine($"{name}을 클리어 하였습니다.");
+                Console.WriteLine("\n[탐험 결과]");
+                Console.WriteLine($"체력: {player.hp + clear[0]} -> {player.hp}");
+                Console.WriteLine($"Gold: {player.gold - clear[1]} G -> {player.gold} G");
+                player.LevelUp();
+            }
+            else
+            {
+                Console.WriteLine("던전 클리어 실패!");
+                Console.WriteLine("\n[탐험 결과]");
+                Console.WriteLine($"체력: {player.hp + clear[0]} -> {player.hp}");
+                Console.WriteLine($"Gold: {player.gold - clear[1]} G -> {player.gold} G");
+            }
         }
 
     }

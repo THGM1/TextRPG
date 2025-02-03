@@ -19,6 +19,7 @@ namespace TextRPG
         public List<Item> inventory; //인벤토리
         public Weapon equippedWeapon; // 착용한 무기
         public Armor equippedArmor; // 착용한 방어구
+        public int clearCnt; // 던전 클리어 횟수
 
         public Player(string name, string job)
         {
@@ -112,6 +113,13 @@ namespace TextRPG
                 Console.WriteLine($"{a.name}을(를) 장착했습니다.");
             }
             else Console.WriteLine("이 아이템은 장착할 수 없습니다.");
+        }
+        
+        public void LevelUp()
+        {
+            level = clearCnt;
+            atk += 1;
+            def += 2;
         }
     }
 }
