@@ -21,9 +21,11 @@ namespace TextRPG
             this.isSetting = false;
         }
 
-        public virtual void GetInfo()
+        public virtual void GetInfo(bool isSell)
         {
-            Console.WriteLine($"{name} | {info}");
+            Console.Write($"{name} | {info}");
+            if (isSell) Console.WriteLine($" | {price * 0.85} G");
+            else Console.WriteLine();
         }
         
         public void setting()

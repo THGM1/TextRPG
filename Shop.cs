@@ -55,7 +55,6 @@ namespace TextRPG
         public void BuyItmes(Player player, int input)
         { 
                 Item selectedItem = items[input - 1];
-                if (input > items.Count) Console.WriteLine("다시 입력하세요");
                 
                 if (player.inventory.Any(i => i.name == selectedItem.name))
                 {
@@ -74,7 +73,16 @@ namespace TextRPG
                 {
                     Console.WriteLine("Gold가 부족합니다.");
                 }
-            }
+        }
+
+        public void SellItems(Player player, int input)
+        {
+            Item selectedItem = player.inventory[input - 1];
+            Console.WriteLine($"'{selectedItem.name}'을(를) 판매했습니다.");
+            player.gold += (int)(selectedItem.price * .85); // 85%로 판매
+            player.inventory.Remove(selectedItem); // 인벤토리에서 삭제
+            
+        }
             
     }
 }

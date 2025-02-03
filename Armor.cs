@@ -16,9 +16,11 @@ namespace TextRPG
             this.isSetting = isSetting;
             
         }
-        public override void GetInfo()
+        public override void GetInfo(bool isSell)
         {
-            Console.WriteLine($"{name}\t| 방어력 +{def} | {info}");
+            Console.Write($"{name}\t| 방어력 +{def} | {info}");
+            if (isSell) Console.WriteLine($" | {price * 0.85} G");
+            else Console.WriteLine();
         }
     }
 }

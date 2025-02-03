@@ -14,9 +14,11 @@ namespace TextRPG
             this.atk = atk;
             this.isSetting = isSetting;
         }
-        public override void GetInfo()
+        public override void GetInfo(bool isSell)
         {
-            Console.WriteLine($"{name}\t| 공격력 +{atk} | {info}");
+            Console.Write($"{name}\t| 공격력 +{atk} | {info}");
+            if (isSell) Console.WriteLine($" | {price * 0.85} G");
+            else Console.WriteLine();
         }
     }
 }

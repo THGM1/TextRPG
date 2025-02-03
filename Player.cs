@@ -17,6 +17,8 @@ namespace TextRPG
         int hp; //체력
         public int gold; //골드
         public List<Item> inventory; //인벤토리
+        public Weapon equippedWeapon; // 착용한 무기
+        public Armor equippedArmor; // 착용한 방어구
 
         public Player(string name, string job)
         {
@@ -56,19 +58,60 @@ namespace TextRPG
             Console.WriteLine($"Gold: {gold} G");
         }
 
-        public void UpdateStatus()
+        //public void UpdateStatus()
+        //{
+        //    foreach (Item item in inventory)
+        //    {
+        //        if(item is Weapon w)
+        //        {
+        //            atk += w.atk;
+        //        }
+        //        else if(item is Armor a)
+        //        {
+        //            def += a.def;
+        //        }
+        //    }
+        //}
+        
+        public void Rest() // 휴식
         {
-            foreach (Item item in inventory)
+            if(gold >= 500)
             {
-                if(item is Weapon w)
-                {
-                    atk += w.atk;
-                }
-                else if(item is Armor a)
-                {
-                    def += a.def;
-                }
+                gold -= 500; //500G 차감
+                hp = 100; // 체력 100까지 회복
+                Console.WriteLine("휴식을 완료했습니다.");
+                Console.WriteLine("남은 골드: {0}", gold);
             }
+            else
+            {
+                Console.WriteLine("Gold가 부족합니다.");
+            }
+        }
+        public void EquipItem(Item item)
+        {
+            if (item is Weapon w)
+            {
+                if (equippedWeapon != null) // 기존 무기 해제
+                {
+                    equippedWeapon.isSetting = false;
+                    Console.WriteLine($"{equippedWeapon.name}을(를) 장착 해제했습니다.");
+                }
+                equippedWeapon = w; // 새 무기 장착
+                w.isSetting = true;
+                Console.WriteLine($"{w.name}을(를) 장착했습니다.");
+            }
+            else if (item is Armor a)
+            {
+                if (equippedArmor != null) // 기존 방어구 해제
+                {
+                    equippedArmor.isSetting = false;
+                    Console.WriteLine($"{equippedArmor.name}을(를) 장착 해제했습니다.");
+                }
+                equippedArmor = a; // 새 방어구 장착
+                a.isSetting = true;
+                Console.WriteLine($"{a.name}을(를) 장착했습니다.");
+            }
+            else Console.WriteLine("이 아이템은 장착할 수 없습니다.");
         }
     }
 }
