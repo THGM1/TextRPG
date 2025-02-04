@@ -43,7 +43,8 @@ namespace TextRPG
             {
                 if (rand.NextDouble() < 0.4)
                 {  // 40% 확률로 실패
-                    player.hp /= 2;
+                    dungeonClear[0] = player.hp / 2;
+                    player.hp -= dungeonClear[0];
                     isClear = false;
                     return dungeonClear;
                 }
@@ -51,7 +52,12 @@ namespace TextRPG
             int sub = reqDef - player.def;
             dungeonClear[0] = rand.Next(20 + sub, 36 + sub);
             player.hp -= dungeonClear[0];
-
+            if (player.hp < 0)
+            {
+                player.hp = 0;
+                isClear = false;
+                return dungeonClear;
+            }
             dungeonClear[1] = reward * (1 + rand.Next(player.atk, player.atk * 2) / 100);
             player.gold += dungeonClear[1];
             isClear = true;
@@ -67,19 +73,16 @@ namespace TextRPG
 
                 Console.WriteLine("축하합니다!!!");
                 Console.WriteLine($"{name}을 클리어 하였습니다.");
-                Console.WriteLine("\n[탐험 결과]");
-                Console.WriteLine($"체력: {player.hp + clear[0]} -> {player.hp}");
-                Console.WriteLine($"Gold: {player.gold - clear[1]} G -> {player.gold} G");
                 player.LevelUp();
             }
             else
             {
                 Console.WriteLine("던전 클리어 실패!");
-                Console.WriteLine("\n[탐험 결과]");
-                Console.WriteLine($"체력: {player.hp + clear[0]} -> {player.hp}");
-                Console.WriteLine($"Gold: {player.gold - clear[1]} G -> {player.gold} G");
             }
+            Console.WriteLine("\n[탐험 결과]");
+            Console.WriteLine($"체력: {player.hp + clear[0]} -> {player.hp}");
+            Console.WriteLine($"Gold: {player.gold - clear[1]} G -> {player.gold} G");
         }
-
+ 
     }
 }
