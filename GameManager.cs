@@ -21,7 +21,7 @@ namespace TextRPG
         static Dungeon easy;
         static Dungeon normal;
         static Dungeon hard;
-
+        static string filePath = "data.txt";
         static void Main(string[] args)
         {
 
@@ -33,8 +33,9 @@ namespace TextRPG
         {
             Console.WriteLine("스파르타 마을에 오신 여러분 환영합니다.");
             Console.WriteLine("이곳에서 던전으로 들어가기전 활동을 할 수 있습니다.\n");
-
-            CreatePlayer();
+            string loadedName;
+            LoadData(out loadedName);
+            CreatePlayer(loadedName);
 
             shop = new Shop(); // 상점
 
@@ -42,13 +43,32 @@ namespace TextRPG
             CreateDungeon();
 
         }
-        static void CreatePlayer() // 플레이어 생성
+        static void CreatePlayer(string loadedName) // 플레이어 생성
         {
             if (player == null)
             {
-                Console.Write("이름을 입력해주세요: ");
-                string name = Console.ReadLine();
-                Console.Write("직업을 입력해주세요: ");
+                string name;
+                if (!string.IsNullOrEmpty(loadedName)) // 저장된 이름이 존재할 때
+                {
+                    Console.WriteLine($"저장된 이름: {loadedName}");
+                    Console.WriteLine("이 이름을 사용하시겠습니까? (y/n)");
+                    string input = Console.ReadLine();
+                    if (input == "y") name = loadedName;
+                    else
+                    {
+                        Console.WriteLine("새로운 이름을 입력해주세요.");
+                        name = Console.ReadLine();
+                        SaveData(name);
+                    }
+                }
+                else // 처음 접속
+                {
+                    Console.WriteLine("이름을 입력해주세요");
+                    name = Console.ReadLine();
+                    SaveData(name);
+                }
+
+                Console.Write("직업을 입력해주세요: ");  // 직업 입력
                 string job = Console.ReadLine();
                 player = new Player(name, job);
             }
@@ -361,6 +381,20 @@ namespace TextRPG
                 }
 
             }
+        }
+        static void SaveData(string name)
+        {
+            File.WriteAllText(filePath, $"{name}");
+        }
+
+        static void LoadData(out string name)
+        {
+            if (File.Exists(filePath))
+            {
+                name = File.ReadAllText(filePath);
+
+            }
+            else name = "";
         }
     }
 }

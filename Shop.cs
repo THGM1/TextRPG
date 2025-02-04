@@ -84,6 +84,7 @@ namespace TextRPG
             player.inventory.Remove(selectedItem); // 인벤토리에서 삭제
             
         }
+
             
     }
 }
